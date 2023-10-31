@@ -12,6 +12,11 @@ let rows = 4;
 let w, h;
 // Order of tiles
 let board = [];
+class Tile{constructor(index,img){
+  this.index = index;
+  this.img=img;
+}}
+
 
 // Loading the image
 function preload() {
@@ -33,7 +38,7 @@ h = height / rows;
   //the challenge is splittling up tiles so that each piece knows its spot. 
 board = []; //initialized board array 
 for (let i=0; i<cols; i++){
-  for (let j=0; i<rows; j++){
+  for (let j=0;  j<rows; j++){
     let x = i*w;
     let y = j*h; 
     let img = createImage(w,h);
@@ -49,6 +54,9 @@ for (let i=0; i<cols; i++){
     console.log(obj);
     mousePos(obj);
   };
+  let tile = new Tile (index, img);
+  show(x, y, w, h) {
+    image(this.img, x, y, w, h);
 }
 
 tiles.pop();
@@ -88,13 +96,13 @@ function mousePressed() {
   move(i,j,board);
   //grab mouse position
   let mousePos ={x:mouseX, y:mouseY };
-  socket.emit('data, mousePos');
+  socket.emit('data', mousePos);
 }
 
 function draw(){
   background(0);
 for (let i=0; i<cols; i++){
-  for (let j=o; i<cols; j++){  
+  for (let j=0; i<rows; j++){  
     let index = i + j * cols;
     let boardIndex = j+i*rows;
 let x = i*w; 
@@ -154,8 +162,6 @@ function isNeighbor(i, j, x, y) {
 }
 
 
-// Probably could just use a variable
-// to track blank spot
 function findBlank() {
   for (let i = 0; i < board.length; i++) {
     if (board[i] == -1) return i;
